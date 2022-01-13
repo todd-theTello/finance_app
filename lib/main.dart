@@ -1,3 +1,5 @@
+import 'package:finance_app/constants/colors.dart';
+import 'package:finance_app/screens/home_screen.dart';
 import 'package:finance_app/screens/splash_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -13,11 +15,12 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       // title: 'Finance App',
       theme: ThemeData.dark().copyWith(
-        primaryColor: const Color(0xFF000000),
-        scaffoldBackgroundColor: const Color(0xFF000000),
-      ),
+          primaryColor: primaryColor,
+          scaffoldBackgroundColor: primaryColor,
+          appBarTheme: AppBarTheme(backgroundColor: primaryColor)),
       routes: {
         SplashScreen.id: (context) => const SplashScreen(),
+        HomeScreen.id: (context) => const HomeScreen(),
       },
       initialRoute: SplashScreen.id,
     );
