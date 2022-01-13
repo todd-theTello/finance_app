@@ -1,5 +1,6 @@
 import 'package:finance_app/constants/colors.dart';
 import 'package:finance_app/constants/text_styles.dart';
+import 'package:finance_app/screens/home_screen.dart';
 import 'package:finance_app/widgets/custom_material_button.dart';
 import 'package:flutter/material.dart';
 
@@ -41,7 +42,9 @@ class _SplashScreenState extends State<SplashScreen> {
                   child: SizedBox(
                     width: MediaQuery.of(context).size.width,
                     child: CustomMaterialButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.pushNamed(context, HomeScreen.id);
+                      },
                       buttonLabel: "Login",
                       color: buttonColor,
                     ),
