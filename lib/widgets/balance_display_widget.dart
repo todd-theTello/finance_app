@@ -46,7 +46,7 @@ class BalanceDisplayWidget extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 26.0),
                   child: Text(
-                    "\$$_balance",
+                    "\$${_balance.toStringAsFixed(2)}",
                     style: headerLabelStyle,
                   ),
                 ),
@@ -59,7 +59,7 @@ class BalanceDisplayWidget extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    _percentage.toString(),
+                    _percentage.toInt().toString() + "%",
                     style: headerLabelStyle.copyWith(
                         fontWeight: FontWeight.w600, fontSize: 26),
                   ),

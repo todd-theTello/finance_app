@@ -1,5 +1,7 @@
 import 'package:finance_app/constants/colors.dart';
 import 'package:finance_app/constants/text_styles.dart';
+import 'package:finance_app/screens/cards_screen.dart';
+import 'package:finance_app/screens/user_profile_screen.dart';
 import 'package:finance_app/widgets/balance_display_widget.dart';
 import 'package:finance_app/widgets/home_screen_action_buttons.dart';
 import 'package:flutter/material.dart';
@@ -18,10 +20,16 @@ class HomeScreen extends StatelessWidget {
         actions: [
           Padding(
             padding: const EdgeInsets.all(8.0),
-            child: CircleAvatar(
-              radius: 20,
-              backgroundColor: buttonColor,
-              backgroundImage: const AssetImage("assets/images/favicon.ico"),
+            child: IconButton(
+              padding: EdgeInsets.zero,
+              onPressed: () {
+                Navigator.pushNamed(context, UserProfileScreen.id);
+              },
+              icon: CircleAvatar(
+                radius: 20,
+                backgroundColor: buttonColor,
+                backgroundImage: const AssetImage("assets/images/favicon.ico"),
+              ),
             ),
           )
         ],
@@ -35,9 +43,15 @@ class HomeScreen extends StatelessWidget {
               style: headerLabelStyle.copyWith(color: secondaryTextColor, fontSize: 28),
             ),
           ),
-          const Padding(
-            padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 20.0),
-            child: BalanceDisplayWidget(),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 20.0),
+            child: BalanceDisplayWidget(
+                balance: 27802.02,
+                percentage: 15.0,
+                direction: Icons.arrow_upward,
+                onTap: () {
+                  Navigator.pushNamed(context, CardsScreen.id);
+                }),
           ),
           Padding(
             padding: const EdgeInsets.all(20.0),
@@ -91,10 +105,11 @@ class HomeScreen extends StatelessWidget {
                     padding: EdgeInsets.symmetric(vertical: 6.0, horizontal: 16.0),
                     child: Text("This Week"),
                   ),
-                )
+                ),
               ],
             ),
-          )
+          ),
+          //TODO: Add a chart to show transactions performed monthly
         ],
       ),
     );
