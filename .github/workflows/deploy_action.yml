@@ -1,33 +1,42 @@
-name: Deploy Application
+# This workflow uses actions that are not certified by GitHub.
+# They are provided by a third-party and are governed by
+# separate terms of service, privacy policy, and support
+# documentation.
+
+name: Deploy Action
 
 on:
   push:
     branches:
       - master
-
+  pull_request:
+    branches:
+        - master
+    types:
+      - closed
 jobs:
   build:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          fetch-depth: '0'
+            fetch-depth: '0'
 
       - name: Generate Git Tag
         id: generate_tag
         run: |
-          $VERSION_PREFIX="v"
-          $VERSION_MAJOR_MINOR="1.0"
-          $VERSION_PATCH=$(git tag --list "${VERSION_PREFIX}${VERSION_MAJOR_MINOR}.*" --sort=-version:refname | head -n 1 | grep -oE '[0-9]+$')
+          const  VERSION_PREFIX = "v"
+          const  VERSION_MAJOR_MINOR = "1.0"
+          const VERSION_PATCH = $(git tag --list "${VERSION_PREFIX}${VERSION_MAJOR_MINOR}.*" --sort=-version:refname | head -n 1 | grep -oE '[0-9]+$')
           if [ -z "$VERSION_PATCH" ]; then
-            $VERSION_PATCH=0
+           VERSION_PATCH = 0
           else
-            $VERSION_PATCH=$(($VERSION_PATCH + 1))
+           VERSION_PATCH = $((VERSION_PATCH + 1))
           fi
-          NEW_TAG="${VERSION_PREFIX}${VERSION_MAJOR_MINOR}.${VERSION_PATCH}"
+          NEW_TAG="STAGING - ${VERSION_PREFIX} ${VERSION_MAJOR_MINOR}"
           echo "Generated new tag: $NEW_TAG"
-          echo "NEW_TAG=$NEW_TAG" >> $GITHUB_ENV
 
       - name: Push Git Tag
         run: |
@@ -35,3 +44,4 @@ jobs:
           git config user.email "github-actions@users.noreply.github.com"
           git tag $NEW_TAG
           git push origin $NEW_TAG
+
