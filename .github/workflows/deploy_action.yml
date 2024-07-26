@@ -26,7 +26,6 @@ jobs:
 
       - name: Generate Git Tag
         id: generate_tag
-        shell: bash
         run: |
           VERSION_PREFIX="V"
           VERSION_MAJOR_MINOR="1.0"
