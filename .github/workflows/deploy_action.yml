@@ -1,49 +1,21 @@
-# This workflow uses actions that are not certified by GitHub.
-# They are provided by a third-party and are governed by
-# separate terms of service, privacy policy, and support
-# documentation.
-
-name: Deploy Action
-
+name: Bump version
 on:
   push:
     branches:
       - master
-  pull_request:
-    branches:
-        - master
-    types:
-      - closed
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+      - name: Bump version and push tag
+        id: tag_version
+        uses: mathieudutour/github-tag-action@v6.2
         with:
-            fetch-depth: '0'
-
-      - name: Generate Git Tag
-        id: generate_tag
-        uses: actions/github-script@v6
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Create a GitHub release
+        uses: ncipollo/release-action@v1
         with:
-          script: |
-            const  VERSION_PREFIX = "v"
-            const  VERSION_MAJOR_MINOR = "1.0"
-            const VERSION_PATCH = $(git tag --list "${VERSION_PREFIX}${VERSION_MAJOR_MINOR}.*" --sort=-version:refname | head -n 1 | grep -oE '[0-9]+$')
-            if [ -z "$VERSION_PATCH" ]; then
-             VERSION_PATCH = 0
-            else
-             VERSION_PATCH = $((VERSION_PATCH + 1))
-            fi
-            const NEW_TAG="STAGING - ${VERSION_PREFIX} ${VERSION_MAJOR_MINOR}"
-            echo "Generated new tag: $NEW_TAG" >> $GITHUB_ENV
-
-      - name: Push Git Tag
-        run: |
-          git config user.name "GitHub Actions"
-          git config user.email "github-actions@users.noreply.github.com"
-          git tag $NEW_TAG
-          git push origin $NEW_TAG
-
+          tag: ${{ steps.tag_version.outputs.new_tag }}
+          name: Release ${{ steps.tag_version.outputs.new_tag }}
+          body: ${{ steps.tag_version.outputs.changelog }}
