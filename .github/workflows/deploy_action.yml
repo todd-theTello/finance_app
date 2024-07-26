@@ -1,4 +1,4 @@
-name: Tag on Push to Master with Specific Merge Message
+name: Deploy Application
 
 on:
   push:
@@ -6,42 +6,32 @@ on:
       - master
 
 jobs:
-  create_tag:
+  build:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: '0'
 
-      - name: Get last commit message
-        id: last_commit
-        run: echo "MESSAGE=$(git log -1 --pretty=%B)" >> $GITHUB_ENV
-
-      - name: Check if commit message contains 'web'
-        id: check_message
+      - name: Generate Git Tag
+        id: generate_tag
         run: |
-          if  "${{ env.MESSAGE }}" == *"new action"*  then
-            echo "contains_web=true" >> $GITHUB_ENV
+          VERSION_PREFIX="v"
+          VERSION_MAJOR_MINOR="1.0"
+          VERSION_PATCH=$(git tag --list "${VERSION_PREFIX}${VERSION_MAJOR_MINOR}.*" --sort=-version:refname | head -n 1 | grep -oE '[0-9]+$')
+          if [ -z "$VERSION_PATCH" ]; then
+            VERSION_PATCH=0
           else
-            echo "contains_web=false" >> $GITHUB_ENV
-        shell: bash
+            VERSION_PATCH=$((VERSION_PATCH + 1))
+          fi
+          NEW_TAG="${VERSION_PREFIX}${VERSION_MAJOR_MINOR}.${VERSION_PATCH}"
+          echo "Generated new tag: $NEW_TAG"
+          echo "NEW_TAG=$NEW_TAG" >> $GITHUB_ENV
 
-      - name: Get current date
-        id: date
-        run: echo "DATE=$(date +'%Y%m%d%H%M%S')" >> $GITHUB_ENV
-        if: env.contains_web == 'true'
-
-      - name: Create new tag
-        id: tag
+      - name: Push Git Tag
         run: |
-          TAG_NAME="v${{ steps.date.outputs.DATE }}"
-          git tag $TAG_NAME
-          echo "::set-output name=TAG::$TAG_NAME"
-        if: env.contains_web == 'true'
-
-      - name: Push new tag
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          git push origin ${{ steps.tag.outputs.TAG }}
-        if: env.contains_web == 'true'
+          git config user.name "GitHub Actions"
+          git config user.email "github-actions@users.noreply.github.com"
+          git tag $NEW_TAG
+          git push origin $NEW_TAG
