@@ -29,16 +29,16 @@ jobs:
         uses: actions/github-script@v6
         with:
           script: |
-          const  VERSION_PREFIX = "v"
-          const  VERSION_MAJOR_MINOR = "1.0"
-          const VERSION_PATCH = $(git tag --list "${VERSION_PREFIX}${VERSION_MAJOR_MINOR}.*" --sort=-version:refname | head -n 1 | grep -oE '[0-9]+$')
-          if [ -z "$VERSION_PATCH" ]; then
-           VERSION_PATCH = 0
-          else
-           VERSION_PATCH = $((VERSION_PATCH + 1))
-          fi
-          const NEW_TAG="STAGING - ${VERSION_PREFIX} ${VERSION_MAJOR_MINOR}"
-          echo "Generated new tag: $NEW_TAG"
+            const  VERSION_PREFIX = "v"
+            const  VERSION_MAJOR_MINOR = "1.0"
+            const VERSION_PATCH = $(git tag --list "${VERSION_PREFIX}${VERSION_MAJOR_MINOR}.*" --sort=-version:refname | head -n 1 | grep -oE '[0-9]+$')
+            if [ -z "$VERSION_PATCH" ]; then
+             VERSION_PATCH = 0
+            else
+             VERSION_PATCH = $((VERSION_PATCH + 1))
+            fi
+            const NEW_TAG="STAGING - ${VERSION_PREFIX} ${VERSION_MAJOR_MINOR}"
+          echo "Generated new tag: $NEW_TAG" >> $GITHUB_ENV
 
       - name: Push Git Tag
         run: |
