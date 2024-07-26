@@ -38,7 +38,7 @@ jobs:
              VERSION_PATCH = $((VERSION_PATCH + 1))
             fi
             const NEW_TAG="STAGING - ${VERSION_PREFIX} ${VERSION_MAJOR_MINOR}"
-          echo "Generated new tag: $NEW_TAG" >> $GITHUB_ENV
+            echo "Generated new tag: $NEW_TAG" >> $GITHUB_ENV
 
       - name: Push Git Tag
         run: |
