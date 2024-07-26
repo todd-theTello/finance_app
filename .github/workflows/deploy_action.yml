@@ -35,7 +35,7 @@ jobs:
           else
            VERSION_PATCH = $((VERSION_PATCH + 1))
           fi
-          NEW_TAG="STAGING - ${VERSION_PREFIX} ${VERSION_MAJOR_MINOR}"
+          const NEW_TAG="STAGING - ${VERSION_PREFIX} ${VERSION_MAJOR_MINOR}"
           echo "Generated new tag: $NEW_TAG"
 
       - name: Push Git Tag
