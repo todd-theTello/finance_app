@@ -26,7 +26,9 @@ jobs:
 
       - name: Generate Git Tag
         id: generate_tag
-        run: |
+        uses: actions/github-script@v6
+        with:
+          script: |
           const  VERSION_PREFIX = "v"
           const  VERSION_MAJOR_MINOR = "1.0"
           const VERSION_PATCH = $(git tag --list "${VERSION_PREFIX}${VERSION_MAJOR_MINOR}.*" --sort=-version:refname | head -n 1 | grep -oE '[0-9]+$')
