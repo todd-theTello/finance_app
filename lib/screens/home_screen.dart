@@ -101,9 +101,7 @@ class HomeScreen extends StatelessWidget {
                   ),
                 ),
                 Container(
-                  decoration: BoxDecoration(
-                      color: containerPrimaryColor,
-                      borderRadius: BorderRadius.circular(20)),
+                  decoration: BoxDecoration(color: containerPrimaryColor, borderRadius: BorderRadius.circular(20)),
                   child: const Padding(
                     padding: EdgeInsets.symmetric(vertical: 6.0, horizontal: 16.0),
                     child: Text("This Week"),
@@ -132,13 +130,13 @@ class HomeScreen extends StatelessWidget {
             ],
           ),
           SfCartesianChart(
-              primaryXAxis: CategoryAxis(),
+              primaryXAxis: const CategoryAxis(),
               // Chart title
               // Enable legend
-              legend: Legend(isVisible: true),
+              legend: const Legend(isVisible: true),
               // Enable tooltip
               tooltipBehavior: TooltipBehavior(enable: true),
-              series: <ChartSeries<Chart, String>>[
+              series: <CartesianSeries<Chart, String>>[
                 StackedColumn100Series<Chart, String>(
                     pointColorMapper: (Chart color, _) {
                       if (_ == 1) {
@@ -168,10 +166,9 @@ class HomeScreen extends StatelessWidget {
             //Initialize the spark charts widget
             child: SfSparkLineChart.custom(
               //Enable the trackball
-              trackball:
-                  SparkChartTrackball(activationMode: SparkChartActivationMode.tap),
+              trackball: const SparkChartTrackball(activationMode: SparkChartActivationMode.tap),
               //Enable marker
-              marker: SparkChartMarker(displayMode: SparkChartMarkerDisplayMode.all),
+              marker: const SparkChartMarker(displayMode: SparkChartMarkerDisplayMode.all),
               //Enable data label
               labelDisplayMode: SparkChartLabelDisplayMode.all,
               xValueMapper: (int index) => chartData[index].month,
