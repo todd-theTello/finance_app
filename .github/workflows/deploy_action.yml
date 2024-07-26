@@ -20,7 +20,7 @@ jobs:
       - name: Check if commit message contains 'web'
         id: check_message
         run: |
-          if [[ "${{ env.MESSAGE }}" == *"web"* ]]; then
+          if [[ "${{ env.MESSAGE }}" == *"new action"* ]]; then
             echo "contains_web=true" >> $GITHUB_ENV
           else
             echo "contains_web=false" >> $GITHUB_ENV
