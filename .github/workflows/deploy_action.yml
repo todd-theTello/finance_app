@@ -37,4 +37,3 @@ jobs:
           git config user.email "github-actions@users.noreply.github.com"
           git tag "STAGING"
           git push origin STAGING
-          echo "Generated new tag: STAGING" >> $GITHUB_ENV
