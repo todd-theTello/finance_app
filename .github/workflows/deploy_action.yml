@@ -18,5 +18,6 @@ jobs:
       - uses: Klemensas/action-autotag@stable
         with:
           GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+          version: "${{ steps.previous_step.outputs.version }}"
           tag_prefix: "v"
           tag_suffix: "-(staging_web)"
